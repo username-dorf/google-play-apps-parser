@@ -1,6 +1,5 @@
+import re
 from google_play_scraper import app
-from urllib import response
-
 import xlsxwriter
 import requests
 import os
@@ -29,7 +28,10 @@ def filter_single(parsed):
 
 
 def get_app_folder(parsed):
-    app_folder = 'apps_content/' + parsed['title']
+    sanitized_directory_name = re.sub(r'[<>:"/\\|?*\x00-\x1F]', '_', parsed['title'])
+    if sanitized_directory_name.startswith('.'):
+        sanitized_directory_name = '_' + sanitized_directory_name[1:]
+    app_folder = 'apps_content/' + sanitized_directory_name
     if not os.path.exists(app_folder):
         os.mkdir(app_folder)
     return app_folder
