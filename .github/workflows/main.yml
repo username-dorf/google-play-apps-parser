@@ -51,7 +51,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: apps parsed [skip ci]"
+            git commit -m "chore: apps parsed"
             git push
           fi
 
