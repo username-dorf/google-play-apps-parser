@@ -1,30 +1,68 @@
 name: parse apps
 
 on:
+  workflow_dispatch:
+
   push:
-    branches:    
-      - main
+    branches: [ main ]
+    paths:
+      - data/packages.json
+      - .github/workflows/main.yml
+      - runner.py
+      - packages_parser.py
+      - html_creator.py
+      - requirements.txt
+
+permissions:
+  contents: write
 
 jobs:
-  getdataandparse:
+  build:
+    if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'chore: apps parsed') }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: checkout repo content
-        uses: actions/checkout@v3 # checkout the repository content to github runner.
-      - name: setup python
-        uses: actions/setup-python@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          python-version: 3.8 #install the python needed
-      - name: Install dependencies
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
         run: |
+          python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: execute py script
+
+      - name: Generate XLSX + download assets
         run: |
-          python runner.py packages
+          python runner.py packages.json
+
+      - name: Commit XLSX (only if changed)
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+
           git add apps.xlsx
-          git commit -m "chore: apps parsed"
-          git push
-          git tag -f latest
-          git push origin --tags
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: apps parsed [skip ci]"
+            git push
+          fi
+
+      - name: Build site (HTML + CSS + copy assets)
+        run: |
+          python html_creator.py
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./site
+          force_orphan: true
