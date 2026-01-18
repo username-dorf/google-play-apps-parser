@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   build:
-    if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'chore: apps parsed') }}
+    if: "${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, 'chore: apps parsed') }}"
     runs-on: ubuntu-latest
 
     steps:
