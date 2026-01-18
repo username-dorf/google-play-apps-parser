@@ -40,4 +40,6 @@ Apps may exist in only one store — the site will show only the available store
 ### Install
 ```bash
 pip install -r requirements.txt
+python runner.py data/packages.json
+python html_creator.py
 ```
