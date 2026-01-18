@@ -14,8 +14,9 @@ OUTPUT_CSS = OUT_DIR / "styles.css"
 
 PAGE_TITLE = "Apps I’ve Worked On"
 PAGE_SUBTITLE = (
-    "A curated list of mobile apps where I contributed to development "
-    "(Unity/C#). Use the buttons to open the store page and browse screenshots."
+    "Hi, I'm Serhii Tokman. Below is a portfolio of mobile apps I contributed to "
+    "(Unity/C#). Use the buttons to open the store pages and browse screenshots. "
+    '<a href="https://github.com/username-dorf" target="_blank" rel="noopener noreferrer">GitHub</a>.'
 )
 PAGE_NOTE = "This page is generated automatically."
 
