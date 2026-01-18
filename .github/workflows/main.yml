@@ -39,7 +39,7 @@ jobs:
 
       - name: Generate XLSX + download assets
         run: |
-          python runner.py packages.json
+          python runner.py data/packages.json
 
       - name: Commit XLSX (only if changed)
         run: |
