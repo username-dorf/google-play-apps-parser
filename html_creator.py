@@ -12,13 +12,18 @@ ASSETS_DIR = OUT_DIR / "assets"
 OUTPUT_HTML = OUT_DIR / "index.html"
 OUTPUT_CSS = OUT_DIR / "styles.css"
 
-PAGE_TITLE = "Apps I’ve Worked On"
+PAGE_TITLE = "Serhii Tokman — Apps Portfolio"
+PAGE_H1 = "Apps I’ve Worked On"
 PAGE_SUBTITLE = (
-    "Hi, I'm Serhii Tokman. Below is a portfolio of mobile apps I contributed to "
-    "(Unity/C#). Use the buttons to open the store pages and browse screenshots. "
-    '<a href="https://github.com/username-dorf" target="_blank" rel="noopener noreferrer">GitHub</a>.'
+    "Hi, I'm Serhii Tokman — a Unity Developer (C#). "
+    "Below is a portfolio of mobile apps I contributed to. "
+    "Use the buttons to open the store pages and browse screenshots."
 )
+PAGE_LINKS = [
+    ("GitHub", "https://github.com/username-dorf"),
+]
 PAGE_NOTE = "This page is generated automatically."
+
 
 ICON_SIZE = 72
 SCREENSHOT_W = 220
@@ -131,6 +136,30 @@ h1 {{
   font-size: 13px;
   margin-top: 6px;
 }}
+
+.links {{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}}
+
+.link-pill {{
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+}}
+
+.link-pill:hover {{
+  background: #f9fafb;
+}}
+
 
 .toolbar {{
   display: flex;
@@ -397,6 +426,11 @@ def main():
 </article>
 """)
 
+    links_html = "".join(
+        f"<a class='link-pill' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>{esc(label)}</a>"
+        for label, url in PAGE_LINKS
+    )
+
     page = f"""<!doctype html>
 <html>
 <head>
@@ -410,7 +444,8 @@ def main():
     <header>
       <h1>{esc(PAGE_TITLE)}</h1>
       <p class="subtitle">{esc(PAGE_SUBTITLE)}</p>
-      <div class="note">{esc(PAGE_NOTE)}</div>
+        <div class="links">{links_html}</div>
+        <div class="note">{esc(PAGE_NOTE)}</div>
     </header>
 
     <div class="toolbar">
