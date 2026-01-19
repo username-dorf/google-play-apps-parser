@@ -2,7 +2,7 @@
 
 This repository automatically generates my **game portfolio** from store data (Google Play + Apple App Store) and publishes it as a website via **GitHub Pages**.
 
-➡️ **Live portfolio:** <https://username-dorf.github.io/google-play-apps-parser/>
+➡️ **Live portfolio:** <https://username-dorf.github.io/apps-portfolio-generator/>
 
 ---
 
